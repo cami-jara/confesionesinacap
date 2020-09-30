@@ -10,6 +10,7 @@ window.mostrarConfesiones = (errores)=>{
 });
     erroresDiv.appendChild(ul);
 },
+
 window.cargarConfesiones = ()=>{
 let tbody = document.querySelector("#tabla-confesiones > tbody");
 tbody.innerHTML = "";
@@ -39,8 +40,8 @@ window.confesiones.forEach((p)=>{
   }
    let tdAcciones = document.createElement("td");
    let boton = document.createElement("button");
-   boton.innerText = "Eliminar";
-   boton.classList.add("btn","btn-danger");
+   boton.innerText = "Destacar comentario";
+   boton.classList.add("btn","btn-danger","btn-sm");
    boton.nro = nro;
    boton.addEventListener('click', ()=>{
      window.eliminarConfesion(this.nro);
@@ -61,8 +62,29 @@ window.confesiones.forEach((p)=>{
 
   window.eliminarConfesion = (nro)=>{
   window.confesiones.splice(nro-1,1);
+  Swal.fire({
+    title: 'Desea destacar el comentario?',
+    text: "Esta accion no se puede deshacer",
+    icon: 'error',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, destacar',
+    cancelButtonText: 'No,me arrepenti',
+
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire(
+        'Destarcado',
+        'El comentario es eliminado',
+        'success'
+      )
+    }
+  })
+
   window.cargarConfesiones();
 };
+
   window.guardarConfesion = (confesion)=>{
   window.confesiones.push(confesion);
   window.cargarConfesiones();
